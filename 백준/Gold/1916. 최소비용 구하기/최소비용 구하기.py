@@ -1,3 +1,4 @@
+# 다익스트라 최적 틀 알아두자
 import heapq
 import sys
 input = sys.stdin.readline
@@ -17,6 +18,9 @@ heapq.heappush(visitList, (costs[start], start))
 
 while visitList:
     cost, position = heapq.heappop(visitList)
+
+    if cost > costs[position]:
+        continue
 
     for bus in buses[position]:
         if costs[bus[1]] > cost + bus[0]:
