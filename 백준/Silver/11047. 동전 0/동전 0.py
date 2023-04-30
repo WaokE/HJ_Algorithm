@@ -17,11 +17,7 @@ coinCount = 0
 while K > 0:
     if currentCoin > K:
         currentCoin = checkAppropriateCoin(K)
-    if K - currentCoin > currentCoin:
-        coinCount += (K//currentCoin)
-        K -= (K//currentCoin)*currentCoin
-    else:
-        K -= currentCoin
-        coinCount += 1
+    K -= currentCoin
+    coinCount += 1
 
 print(coinCount)
