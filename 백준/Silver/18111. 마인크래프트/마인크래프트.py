@@ -1,12 +1,10 @@
 import sys
-input = input
+input = sys.stdin.readline
 
 N, M, B = map(int,input().split())
-block = []
-for _ in range(N):
-    block.append([int(x) for x in input().rstrip().split()])
+block = [list(map(int,input().split()))for _ in range(N)]
 
-sec = int(1e9)
+sec = float('inf')
 height = 0
 
 for i in range(257):
