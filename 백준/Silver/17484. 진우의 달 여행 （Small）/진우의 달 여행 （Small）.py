@@ -2,26 +2,21 @@ N, M = list(map(int, input().split()))
 fuelToMove = [list(map(int, input().split()))for _ in range(N)]
 fuelToMove.append([0]*M)
 
-min = float('inf')
-def toMoon(x, y, fuel, moved):
-    global min
-    if x == N: 
-        if min > fuel: min = fuel
-        return
-    if moved == 1:
-        toMoon(x+1, y, fuel+fuelToMove[x+1][y], 2)
-        if y+1< M: toMoon(x+1, y+1, fuel+fuelToMove[x+1][y+1], 3)
-    elif moved == 2:
-        if -1< y-1: toMoon(x+1, y-1, fuel+fuelToMove[x+1][y-1], 1)
-        if y+1< M: toMoon(x+1, y+1, fuel+fuelToMove[x+1][y+1], 3)
-    elif moved == 3:
-        if -1< y-1: toMoon(x+1, y-1, fuel+fuelToMove[x+1][y-1], 1)
-        toMoon(x+1, y, fuel+fuelToMove[x+1][y], 2)
-    elif moved == 0:
-        if -1< y-1: toMoon(x+1, y-1, fuel+fuelToMove[x+1][y-1], 1)
-        toMoon(x+1, y, fuel+fuelToMove[x+1][y], 2)
-        if y+1< M: toMoon(x+1, y+1, fuel+fuelToMove[x+1][y+1], 3)
+dp = [[[0]*3 for _ in range(M)]for _ in range(N)]
 
-for i in range(M): toMoon(0, i, fuelToMove[0][i], 0)
+for i in range(N):
+    for j in range(M):
+        if j-1 < 0:
+            dp[i][j][0] = dp[i-1][j][1]+fuelToMove[i][j]
+            dp[i][j][1] = dp[i-1][j+1][0]+fuelToMove[i][j]
+            dp[i][j][2] = min(dp[i-1][j][1]+fuelToMove[i][j], dp[i-1][j+1][0]+fuelToMove[i][j])
+        elif j+1 > M-1:
+            dp[i][j][0] = min(dp[i-1][j-1][2]+fuelToMove[i][j], dp[i-1][j][1]+fuelToMove[i][j])
+            dp[i][j][1] = dp[i-1][j-1][2]+fuelToMove[i][j]
+            dp[i][j][2] = dp[i-1][j][1]+fuelToMove[i][j]
+        else:
+            dp[i][j][0] = min(dp[i-1][j-1][2]+fuelToMove[i][j], dp[i-1][j][1]+fuelToMove[i][j])
+            dp[i][j][1] = min(dp[i-1][j-1][2]+fuelToMove[i][j], dp[i-1][j+1][0]+fuelToMove[i][j])
+            dp[i][j][2] = min(dp[i-1][j][1]+fuelToMove[i][j], dp[i-1][j+1][0]+fuelToMove[i][j])
 
-print(min)
+print(min(map(min, dp[-1])))
