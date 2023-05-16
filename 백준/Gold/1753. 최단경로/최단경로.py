@@ -16,6 +16,8 @@ visited.add(K)
 q.append((0, K))
 while q:
     currentCost, currentNode = heappop(q)
+    if currentCost > cost[currentNode]:
+        continue
     visited.add(currentNode)
     for edge in edges[currentNode]:
         if cost[edge[1]] > currentCost + edge[0] and edge[1] not in visited:
