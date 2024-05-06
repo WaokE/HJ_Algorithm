@@ -9,17 +9,19 @@ function solution(input) {
     const M = +input[1];
     const S = input[2];
 
-    const pattern = "IO";
-    const target = pattern.repeat(N) + "I";
-
-    const searchStack = [];
-    for (let i = 0; i < S.length; i++) {
-        searchStack.push(S[i]);
-        if (searchStack.length >= target.length) {
-            if (searchStack.slice(searchStack.length - target.length).join("") === target) result++;
+    for (let i = 0; i < M - 2; i++) {
+        if (S[i] === "I" && S[i + 1] === "O" && S[i + 2] === "I") {
+            let cnt = 0;
+            while (S[i + 1] === "O" && S[i + 2] === "I") {
+                cnt++;
+                if (cnt === N) {
+                    cnt--;
+                    result++;
+                }
+                i += 2;
+            }
         }
     }
-
     console.log(result);
 }
 
